@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kubernetes Events</title>
+    <style>
+        /* Add your custom CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .event {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .positive {
+            background-color: lightgreen;
+        }
+        .negative {
+            background-color: lightcoral;
+        }
+        .alert {
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Kubernetes Events</h1>
+    <div id="events">
+        {% for event in events %}
+            <div class="event {% if "error" in event.lower() %}negative{% elif "warning" in event.lower() %}warning{% else %}positive{% endif %}">
+                {% if "error" in event.lower() or "warning" in event.lower() %}
+                    <span class="alert">ALERT: {{ event }}</span>
+                {% else %}
+                    {{ event }}
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        // Function to show error and warning pop-ups
+        function showAlert(message) {
+            alert(message);
+        }
+
+        // Check for negative events and show pop-ups
+        document.addEventListener("DOMContentLoaded", function() {
+            var negativeEvents = document.querySelectorAll('.negative');
+            for (var i = 0; i < negativeEvents.length; i++) {
+                showAlert("Error or Warning: " + negativeEvents[i].textContent);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show Logs</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.1/socket.io.js" integrity="sha512-JeRcNTs1L/R1xNJyftziKYU2i/zeU8/Ifq9MYM7QStRjGszRLO83oR4fZ6d3hKAX3NzF5AefzGdWu6M9IHZ8kQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+    <h1>Live Logs</h1>
+    <div id="logs"></div>
+
+    <script>
+        const socket = io();
+
+        socket.on('log', function(logLine) {
+            const logsContainer = document.getElementById('logs');
+            logsContainer.innerHTML += logLine + '<br>';
+            logsContainer.scrollTop = logsContainer.scrollHeight;
+        });
+    </script>
+</body>
+</html>

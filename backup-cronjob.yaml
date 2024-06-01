@@ -1,0 +1,32 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: backup
+  namespace: default
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: c5
+            image: manasvivarma/my-upload-image:new # Replace with your Docker image
+            imagePullPolicy: IfNotPresent
+            volumeMounts:
+            - name: newupload-volume
+              mountPath: /app/newupload.txt
+              subPath: newupload.txt
+            - name: google-drive-secret-volume
+              mountPath: /app/secrets
+          restartPolicy: OnFailure
+          imagePullSecrets:
+          - name: myregistrykey
+          volumes:
+          - name: newupload-volume
+            persistentVolumeClaim:
+              claimName: newupload-pvc
+          - name: google-drive-secret-volume
+            secret:
+              secretName: google-drive-secrets    
+          restartPolicy: OnFailure      
